@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
     public bool isLive;
     public float gameTime;
     public float maxGameTime = 2 * 10f;
+    [Header("#Map Control")]
+    public int currentMap = 1;
+    public int maxMap = 2;
     [Header("#Player Info")]
     public int playerId;
     public float health;
@@ -23,6 +26,7 @@ public class GameManager : MonoBehaviour
     public LevelUp uiLevelUp;
     public Result uiResult;
     public GameObject enemyCleaner;
+    public GameObject pausePanel;
 
     void Awake()
     {
@@ -68,6 +72,8 @@ public class GameManager : MonoBehaviour
 
         uiResult.gameObject.SetActive(true);
         uiResult.Win();
+
+        uiResult.ShowNextMapButton(currentMap < maxMap);
         Stop();
 
         AudioManager.instance.PlayBgm(false);
@@ -79,6 +85,20 @@ public class GameManager : MonoBehaviour
     }
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!isLive && pausePanel.activeSelf)
+            {
+                AudioManager.instance.EffectBgm(false);
+                Resume();
+            }
+            else if (isLive)
+            {
+                AudioManager.instance.EffectBgm(true);
+                ShowPausePanel(); 
+            }
+        }
+
         if (!isLive) return;
         gameTime += Time.deltaTime;
 
@@ -110,5 +130,31 @@ public class GameManager : MonoBehaviour
     {
         isLive = true;
         Time.timeScale = 1;
+        pausePanel.SetActive(false);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
+        AudioManager.instance.EffectBgm(false);
+    }
+    public void NextMap()
+    {
+        if (currentMap < maxMap)
+        {
+            currentMap++;
+            SceneManager.LoadScene("Map" + currentMap);
+        }
+        else
+        {
+            Debug.Log("Finish all the levels!");
+            SceneManager.LoadScene(0);
+        }
+    }
+    void ResetMapData()
+    {
+        gameTime = 0;
+    }
+    public void ShowPausePanel()
+    {
+        Stop();
+        pausePanel.SetActive(true);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
     }
 }
