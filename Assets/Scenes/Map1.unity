@@ -1312,7 +1312,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Warrior
+  m_Text: Scout
 --- !u!222 &143303660
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1385,7 +1385,7 @@ MonoBehaviour:
   spawnData:
   - spriteType: 0
     spawnTime: 0.5
-    health: 10
+    health: 15
     speed: 2
     attackType: 0
     meleeDamage: 3
@@ -1395,7 +1395,7 @@ MonoBehaviour:
     rangedBulletPrefab: {fileID: 0}
   - spriteType: 1
     spawnTime: 2
-    health: 20
+    health: 25
     speed: 1.5
     attackType: 0
     meleeDamage: 4
@@ -1410,7 +1410,7 @@ MonoBehaviour:
     attackType: 1
     meleeDamage: 0
     rangedDamage: 5
-    meleeCooldown: 1.5
+    meleeCooldown: 0
     rangedCooldown: 2
     rangedBulletPrefab: {fileID: 3170373831759848672, guid: 42d2c5fa974b86b48a0e2ec18cda0efe, type: 3}
   levelTime: 0
@@ -2442,7 +2442,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Farmer
+  m_Text: Swordmaster
 --- !u!222 &464257024
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2761,7 +2761,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 9.166667
+  orthographic size: 10.166667
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -8768,7 +8768,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Farmer
+  m_Text: Warrior
 --- !u!222 &926511311
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -24178,7 +24178,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1589563669}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -27556,9 +27556,9 @@ SceneRoots:
   - {fileID: 2025854746}
   - {fileID: 2002909881}
   - {fileID: 657067037}
+  - {fileID: 1589563671}
   - {fileID: 1147774307}
   - {fileID: 2124935050}
   - {fileID: 690252903}
   - {fileID: 1506010455}
   - {fileID: 1434255729}
-  - {fileID: 1589563671}

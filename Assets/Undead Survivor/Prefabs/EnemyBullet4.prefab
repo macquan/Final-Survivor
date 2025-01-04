@@ -162,5 +162,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 3
-  bulletSpeed: 3
-  maxDistance: 20
+  bulletSpeed: 5
+  maxDistance: 50
