@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
 
     [Header("#Map Control")]
     public int currentMap = 1;
-    public int maxMap = 2;
+    public int maxMap = 5;
 
     [Header("#Player Info")]
     public int playerId;

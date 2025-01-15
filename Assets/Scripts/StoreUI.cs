@@ -70,48 +70,64 @@ public class StoreUI : MonoBehaviour
         {
             Debug.Log($"Starting setup for item: {data.displayName}");
 
-            // Debug các components before get
+            // Get references
             var iconObj = itemUI.transform.Find("Icon");
             var nameObj = itemUI.transform.Find("NameText");
             var descObj = itemUI.transform.Find("DescriptionText");
             var costObj = itemUI.transform.Find("CostText");
             var buyObj = itemUI.transform.Find("BuyButton");
 
-            Debug.Log($"Found objects - Icon: {iconObj != null}, Name: {nameObj != null}, " +
-                     $"Desc: {descObj != null}, Cost: {costObj != null}, Buy: {buyObj != null}");
-
             // Get components
-            Image icon = iconObj?.GetComponent<Image>();
+            Image panelImage = iconObj?.GetComponent<Image>();        // Panel background
+            Image buyButtonImage = buyObj?.GetComponent<Image>();     // Buy button image
             Text nameText = nameObj?.GetComponent<Text>();
             Text descText = descObj?.GetComponent<Text>();
             Text costText = costObj?.GetComponent<Text>();
             Button buyButton = buyObj?.GetComponent<Button>();
 
             // Validate components
-            if (icon == null || nameText == null || descText == null ||
-                costText == null || buyButton == null)
+            if (panelImage == null || buyButtonImage == null || nameText == null ||
+                descText == null || costText == null || buyButton == null)
             {
                 Debug.LogError($"Missing components in prefab for item: {data.displayName}");
                 return;
             }
 
             // Set data
-            if (data.icon != null)
-                icon.sprite = data.icon;
-            else
-                Debug.LogWarning($"No icon for item: {data.displayName}");
-
             nameText.text = data.displayName;
             descText.text = data.description;
-            costText.text = $"Cost: {data.cost}";
+            costText.text = $"$: {data.cost} coin";
+
+            // Set icon to buy button
+            if (data.icon != null)
+            {
+                buyButtonImage.sprite = data.icon;
+                buyButtonImage.preserveAspect = true;
+            }
+            else
+            {
+                Debug.LogWarning($"No icon for item: {data.displayName}");
+            }
 
             // Check if already purchased
             bool isPurchased = PlayerPrefs.GetInt(data.itemID, 0) == 1;
-            buyButton.gameObject.SetActive(!isPurchased);
+            if (isPurchased)
+            {
+                Color grayColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+                panelImage.color = grayColor;
+                buyButtonImage.color = grayColor;
+                costText.text = "OWNED";
+                buyButton.interactable = false;
+            }
+            else
+            {
+                panelImage.color = Color.white;
+                buyButtonImage.color = Color.white;
+                buyButton.interactable = true;
 
-            // Add purchase handler
-            buyButton.onClick.RemoveAllListeners();
-            buyButton.onClick.AddListener(() => OnBuyClicked(data, buyButton));
+                buyButton.onClick.RemoveAllListeners();
+                buyButton.onClick.AddListener(() => OnBuyClicked(data, panelImage, buyButtonImage, buyButton, costText));
+            }
 
             Debug.Log($"Successfully set up item: {data.displayName}");
         }
@@ -120,7 +136,8 @@ public class StoreUI : MonoBehaviour
             Debug.LogError($"Error setting up item {data.displayName}: {e.Message}\n{e.StackTrace}");
         }
     }
-    private void OnBuyClicked(StoreItemData data, Button buyButton)
+    private void OnBuyClicked(StoreItemData data, Image panelImage, Image buyButtonImage,
+                             Button buyButton, Text costText)
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
 
@@ -139,7 +156,13 @@ public class StoreUI : MonoBehaviour
             PlayerPrefs.SetInt(data.itemID, 1);
             PlayerPrefs.Save();
 
-            buyButton.gameObject.SetActive(false);
+            // Update UI to show purchased state
+            Color grayColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+            panelImage.color = grayColor;
+            buyButtonImage.color = grayColor;
+            costText.text = "OWNED";
+            buyButton.interactable = false;
+
             UpdateCoinUI();
 
             // Apply stats
