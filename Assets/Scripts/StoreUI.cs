@@ -200,7 +200,7 @@ public class StoreUI : MonoBehaviour
     {
         if (GameManager.instance != null && totalCoinText != null)
         {
-            totalCoinText.text = $"Total Coin: {GameManager.instance.totalCoin}";
+            totalCoinText.text = $"{GameManager.instance.totalCoin}";
         }
     }
 

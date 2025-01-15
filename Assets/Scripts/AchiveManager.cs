@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AchiveManager : MonoBehaviour
 {
@@ -68,7 +69,8 @@ public class AchiveManager : MonoBehaviour
                 break;
             case Achive.UnlockBean:
                 isAchive = GameManager.instance.gameTime == GameManager.instance.maxGameTime
-                                && GameManager.instance.currentMap == 3; //Map3
+                          && GameManager.instance.currentMap == 3
+                          && SceneManager.GetActiveScene().name == "Map3";
                 break;
         }
 

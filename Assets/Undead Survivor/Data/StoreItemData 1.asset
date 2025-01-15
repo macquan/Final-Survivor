@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: StoreItemData 1
   m_EditorClassIdentifier: 
   itemID: 1
-  displayName: Speed Boost
+  displayName: Hurricane Orb
   description: +20% Movement Speed
-  icon: {fileID: -155058199, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
+  icon: {fileID: 21300000, guid: 2c8eee8872f7d0047b0b9337ab411e60, type: 3}
   cost: 20
   healthBoost: 0
   damageBoost: 0
