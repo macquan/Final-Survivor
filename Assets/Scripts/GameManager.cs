@@ -2,16 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+
     [Header("#Game Control")]
     public bool isLive;
     public float gameTime;
     public float maxGameTime = 2 * 10f;
+
     [Header("#Map Control")]
     public int currentMap = 1;
     public int maxMap = 2;
+
     [Header("#Player Info")]
     public int playerId;
     public float health;
@@ -20,6 +24,12 @@ public class GameManager : MonoBehaviour
     public int kill;
     public int exp;
     public int[] nextExp = {3, 5, 10, 100, 150, 210, 280, 360, 450, 600 };
+    // Store the base multipliers / or extra factor from store
+    public float damageBoostFactor;         // Default = 0 => no extra
+    public float movementSpeedBoostFactor;  // Default = 0 => no extra
+    public float weaponSpeedBoostFactor;    // Default = 0 => no extra (for weapon ID 0)
+    public float weaponRateBoostFactor;     // Default = 0 => no extra (for weapon ID 1)
+
     [Header("#Game Object")]
     public PoolManager pool;
     public Player player;
@@ -28,14 +38,43 @@ public class GameManager : MonoBehaviour
     public GameObject enemyCleaner;
     public GameObject pausePanel;
 
+    [Header("#Coin System")]
+    public int coin;
+    public int totalCoin;
+    public Text coinText;
+
+    [Header("#Store System")]
+    public GameObject storePanel;
+    // Optionally reference a list of ItemStoreData so we can re-apply purchased items
+    public List<StoreItemData> storeItems;
+    // (Optional) UI objects you want to hide when store is shown
+    public List<GameObject> gameplayUIObjects;
+    private bool isStoreOpen = false;
+
     void Awake()
     {
-        instance = this;    
+        instance = this;
+
+        totalCoin = PlayerPrefs.GetInt("TotalCoin", 0);
+
+        // Make sure store is hidden at start (if assigned)
+        if (storePanel != null)
+            storePanel.SetActive(false);
+
+        // Restore previously purchased store items
+        RestorePurchasedItems();
+
+        // Initialize player's stats by applying stored boosts, if any
+        health = maxHealth;
     }
     public void GameStart(int id)
     {
         playerId = id;
         health = maxHealth;
+
+        coin = 0; // Reset coin each run
+
+        StartCoroutine(ApplyBoostsDelayed());
 
         player.gameObject.SetActive(true);
         uiLevelUp.Select(playerId%2);
@@ -81,6 +120,7 @@ public class GameManager : MonoBehaviour
     }
     public void GameRetry()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
         SceneManager.LoadScene(0);
     }
     void Update()
@@ -147,14 +187,108 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene(0);
         }
     }
-    void ResetMapData()
-    {
-        gameTime = 0;
-    }
     public void ShowPausePanel()
     {
         Stop();
         pausePanel.SetActive(true);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
+    }
+    public void AddCoin(int amount)
+    {
+        if (!isLive) return;
+
+        coin += amount;       // Increase in-run coin count
+        totalCoin += amount;  // Increase total coin count for persistent storage
+        PlayerPrefs.SetInt("TotalCoin", totalCoin);
+        PlayerPrefs.Save();
+    }
+    public void ToggleStore()
+    {
+        // Flip the boolean state
+        isStoreOpen = !isStoreOpen;
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
+
+        // Show / hide the store panel
+        if (storePanel != null)
+            storePanel.SetActive(isStoreOpen);
+
+        // Optionally hide or show other UI objects during store display
+        foreach (GameObject uiObj in gameplayUIObjects)
+        {
+            uiObj.SetActive(!isStoreOpen);
+        }
+    }
+    void RestorePurchasedItems()
+    {
+        foreach (StoreItemData data in storeItems)
+        {
+            bool isPurchased = PlayerPrefs.GetInt(data.itemID, 0) == 1;
+            if (isPurchased)
+            {
+                maxHealth += data.healthBoost;
+                damageBoostFactor += data.damageBoost;
+                movementSpeedBoostFactor += data.movementSpeedBoost;
+                weaponSpeedBoostFactor += data.weaponSpeedBoost;
+                weaponRateBoostFactor += data.weaponRateBoost;
+            }
+        }
+        health = maxHealth;
+    }
+    public void UpdateAllGears()
+    {
+        Gear[] gears = player.GetComponentsInChildren<Gear>();
+        foreach (Gear gear in gears)
+        {
+            gear.ApplyGear();
+        }
+    }
+    private void ApplyStoreBoosts()
+    {
+        if (player == null) return;
+
+        Debug.Log("Applying store boosts..."); // Debug log
+
+        // Apply movement speed boost
+        float currentPlayerSpeed = player.speed;
+        float speedBoost = currentPlayerSpeed * movementSpeedBoostFactor;
+        player.speed += speedBoost;
+        Debug.Log($"Player Speed: current={currentPlayerSpeed}, boost={speedBoost}, final={player.speed}");
+
+        // Apply weapon boosts
+        Weapon[] weapons = player.GetComponentsInChildren<Weapon>();
+        foreach (Weapon weapon in weapons)
+        {
+            float currentDamage = weapon.damage;
+            float damageBoost = currentDamage * damageBoostFactor;
+            weapon.damage += damageBoost;
+
+            if (weapon.id == 0)
+            {
+                // Weapon 0 - Apply speed boost
+                float currentWeaponSpeed = weapon.speed;
+                float speedBoostAmount = currentWeaponSpeed * weaponSpeedBoostFactor;
+                weapon.speed += speedBoostAmount;
+
+                Debug.Log($"Weapon {weapon.id}: " +
+                         $"Speed(current={currentWeaponSpeed}, boost={speedBoostAmount}, final={weapon.speed}), " +
+                         $"Damage(current={currentDamage}, boost={damageBoost}, final={weapon.damage})");
+            }
+            else
+            {
+                // Other weapons - Apply rate boost
+                float currentRate = weapon.speed;
+                float rateBoostAmount = currentRate * weaponRateBoostFactor;
+                weapon.speed -= rateBoostAmount;
+
+                Debug.Log($"Weapon {weapon.id}: " +
+                         $"Rate(current={currentRate}, decrease={rateBoostAmount}, final={weapon.speed}), " +
+                         $"Damage(current={currentDamage}, boost={damageBoost}, final={weapon.damage})");
+            }
+        }
+    }
+    private IEnumerator ApplyBoostsDelayed()
+    {
+        yield return null; // wait 1 frame
+        ApplyStoreBoosts();
     }
 }

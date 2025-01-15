@@ -10,6 +10,9 @@ public class Enemy : MonoBehaviour
     public RuntimeAnimatorController[] animCon;
     public Rigidbody2D target;
 
+    [Header("Coin Drop")]
+    public GameObject coinPrefab;
+
     AttackType attackType;
     float meleeDamage;
     float rangedDamage;
@@ -190,6 +193,8 @@ public class Enemy : MonoBehaviour
             GameManager.instance.kill++;
             GameManager.instance.GetExp();
 
+            DropCoin();
+
             if (GameManager.instance.isLive)
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
         }
@@ -207,4 +212,12 @@ public class Enemy : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+    void DropCoin()
+    {
+        if (coinPrefab != null)
+        {
+            GameObject coin = Instantiate(coinPrefab, transform.position, Quaternion.identity);
+        }
+    }
+
 }

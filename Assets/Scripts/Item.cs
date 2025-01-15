@@ -61,10 +61,11 @@ public class Item : MonoBehaviour
                 }
                 else
                 {
-                    float nextDamage = data.baseDamage;
+                    float currentDamage = weapon.damage;
+                    float damageRate = data.damages[level];
                     int nextCount = 0;
 
-                    nextDamage += data.baseDamage * data.damages[level];
+                    float nextDamage = currentDamage * (1 + damageRate);
                     nextCount += data.counts[level];
 
                     weapon.LevelUp(nextDamage, nextCount);

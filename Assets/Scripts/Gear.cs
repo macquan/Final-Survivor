@@ -24,7 +24,7 @@ public class Gear : MonoBehaviour
         this.rate = rate;
         ApplyGear();
     }
-    void ApplyGear()
+    public void ApplyGear()
     {
         switch (type)
         {
@@ -45,19 +45,33 @@ public class Gear : MonoBehaviour
             switch (weapon.id)
             {
                 case 0:
-                    float speed = 150 * Character.WeaponSpeed;
-                    weapon.speed = speed + (speed * rate);
+                    float currentSpeed = weapon.speed;
+                    float speedIncrease = currentSpeed * rate;
+                    weapon.speed += speedIncrease;
+
+                    Debug.Log($"Weapon {weapon.id} Speed: current={currentSpeed}, " +
+                             $"increase={speedIncrease}, final={weapon.speed}");
                     break;
+
                 default:
-                    speed = 0.5f * Character.WeaponRate;
-                    weapon.speed = speed * (1f - rate);
+                    float currentRate = weapon.speed;
+                    float rateDecrease = currentRate * rate;
+                    weapon.speed -= rateDecrease;
+
+                    Debug.Log($"Weapon {weapon.id} Rate: current={currentRate}, " +
+                             $"decrease={rateDecrease}, final={weapon.speed}");
                     break;
             }
         }
     }
+
     void SpeedUp()
     {
-        float speed = 3 * Character.Speed;
-        GameManager.instance.player.speed = speed + (speed * rate);
+        float currentSpeed = GameManager.instance.player.speed;
+        float speedIncrease = currentSpeed * rate;
+        GameManager.instance.player.speed += speedIncrease;
+
+        Debug.Log($"Player Speed: current={currentSpeed}, " +
+                 $"increase={speedIncrease}, final={GameManager.instance.player.speed}");
     }
 }
