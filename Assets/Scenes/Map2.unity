@@ -3651,7 +3651,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 9.166667
+  orthographic size: 10.166667
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -9205,6 +9205,9 @@ MonoBehaviour:
   mapNameText: {fileID: 1414903497}
   mapNameDisplayTime: 2
   mapNameFadeTime: 1
+  tutorialPanel: {fileID: 0}
+  tutorialDisplayTime: 3
+  tutorialFadeTime: 1
   playerId: 0
   health: 0
   maxHealth: 100

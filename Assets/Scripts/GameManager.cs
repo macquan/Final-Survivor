@@ -129,6 +129,19 @@ public class GameManager : MonoBehaviour
         AudioManager.instance.PlayBgm(false);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Win);
     }
+    public void NextMap()
+    {
+        if (currentMap < maxMap)
+        {
+            currentMap++;
+            SceneManager.LoadScene("Map" + currentMap);
+        }
+        else
+        {
+            Debug.Log("Finish all the levels!");
+            SceneManager.LoadScene(0);
+        }
+    }
     public void GameRetry()
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
