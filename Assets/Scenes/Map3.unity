@@ -3226,7 +3226,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 10.166667
+  orthographic size: 9.166667
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -8424,7 +8424,7 @@ MonoBehaviour:
   isLive: 0
   gameTime: 0
   maxGameTime: 60
-  currentMap: 1
+  currentMap: 3
   maxMap: 5
   playerId: 0
   health: 0
