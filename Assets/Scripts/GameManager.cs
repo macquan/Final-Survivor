@@ -19,6 +19,11 @@ public class GameManager : MonoBehaviour
     public float mapNameDisplayTime = 2f; 
     public float mapNameFadeTime = 1f;
 
+    [Header("#Tutorial")]
+    public GameObject tutorialPanel; 
+    public float tutorialDisplayTime = 3f; 
+    public float tutorialFadeTime = 1f;
+
     [Header("#Player Info")]
     public int playerId;
     public float health;
@@ -84,6 +89,7 @@ public class GameManager : MonoBehaviour
         Resume();
 
         ShowMapName();
+        ShowTutorial();
 
         AudioManager.instance.PlayBgm(true);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
@@ -311,5 +317,35 @@ public class GameManager : MonoBehaviour
 
         mapNameText.gameObject.SetActive(false);
         mapNameText.color = originalColor;
+    }
+
+    public void ShowTutorial()
+    {
+        if (currentMap == 1 && tutorialPanel != null)
+        {
+            tutorialPanel.SetActive(true);
+            StartCoroutine(HideTutorialAfterDelay());
+        }
+    }
+    private IEnumerator HideTutorialAfterDelay()
+    {
+        yield return new WaitForSeconds(tutorialDisplayTime);
+
+        Image tutorialImage = tutorialPanel.GetComponent<Image>();
+        if (tutorialImage != null)
+        {
+            float elapsedTime = 0f;
+            Color originalColor = tutorialImage.color;
+
+            while (elapsedTime < tutorialFadeTime)
+            {
+                elapsedTime += Time.deltaTime;
+                float alpha = Mathf.Lerp(1f, 0f, elapsedTime / tutorialFadeTime);
+                tutorialImage.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+                yield return null;
+            }
+        }
+
+        tutorialPanel.SetActive(false);
     }
 }
