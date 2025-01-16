@@ -72,7 +72,7 @@ public class Enemy : MonoBehaviour
 
         if (attackType == AttackType.Melee)
         {
-            if (dist < 0.1f && canMeleeAttack)
+            if (dist < 1.0f && canMeleeAttack)
             {
                 StartCoroutine(MeleeAttack());
             }

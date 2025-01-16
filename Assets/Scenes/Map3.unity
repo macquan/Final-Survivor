@@ -8589,6 +8589,7 @@ GameObject:
   - component: {fileID: 554972357}
   - component: {fileID: 554972356}
   - component: {fileID: 554972355}
+  - component: {fileID: 554972358}
   m_Layer: 5
   m_Name: Coin Text
   m_TagString: Untagged
@@ -8641,7 +8642,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -8670,6 +8671,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 554972353}
   m_CullTransparentMesh: 1
+--- !u!114 &554972358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 554972353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.38431373, g: 0.38431373, b: 0.3529412, a: 0.3254902}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &558580692
 GameObject:
   m_ObjectHideFlags: 0
@@ -9175,7 +9191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLive: 0
   gameTime: 0
-  maxGameTime: 120
+  maxGameTime: 5
   currentMap: 3
   maxMap: 5
   mapNameText: {fileID: 716143710}
@@ -9190,7 +9206,7 @@ MonoBehaviour:
   level: 0
   kill: 0
   exp: 0
-  nextExp: 03000000060000000a0000006400000096000000d20000001801000068010000c201000058020000
+  nextExp: 03000000060000000a0000001400000023000000320000004100000050000000640000007d000000
   damageBoostFactor: 0
   movementSpeedBoostFactor: 0
   weaponSpeedBoostFactor: 0
@@ -20758,7 +20774,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Kill 100 Undead in Map 2 to Unlock
+  m_Text: Kill 100 Undead to Unlock
 --- !u!222 &1826947818
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -31604,6 +31620,7 @@ GameObject:
   - component: {fileID: 2054859077}
   - component: {fileID: 2054859076}
   - component: {fileID: 2054859075}
+  - component: {fileID: 2054859078}
   m_Layer: 5
   m_Name: Kill Text
   m_TagString: Untagged
@@ -31656,7 +31673,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -31685,6 +31702,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2054859073}
   m_CullTransparentMesh: 1
+--- !u!114 &2054859078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054859073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.38431373, g: 0.38431373, b: 0.3529412, a: 0.3254902}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &2074189805
 GameObject:
   m_ObjectHideFlags: 0
