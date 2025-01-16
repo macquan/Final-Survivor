@@ -9,6 +9,7 @@ public class Spawner : MonoBehaviour
     public float levelTime;
 
     public int bossSpriteType;
+    public float bossSpawnTime;
     public SpawnData bossData;
 
     int level;
@@ -33,7 +34,7 @@ public class Spawner : MonoBehaviour
             SpawnEnemy();
         }
 
-        if (!bossSpawned && GameManager.instance.maxGameTime - GameManager.instance.gameTime <= 10f)
+        if (!bossSpawned && GameManager.instance.maxGameTime - GameManager.instance.gameTime <= bossSpawnTime)
         {
             bossSpawned = true;
             SpawnBoss();

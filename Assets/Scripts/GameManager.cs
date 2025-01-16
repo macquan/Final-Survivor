@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     [Header("#Map Control")]
     public int currentMap = 1;
     public int maxMap = 5;
+    public Text mapNameText; 
+    public float mapNameDisplayTime = 2f; 
+    public float mapNameFadeTime = 1f;
 
     [Header("#Player Info")]
     public int playerId;
@@ -79,6 +82,8 @@ public class GameManager : MonoBehaviour
         player.gameObject.SetActive(true);
         uiLevelUp.Select(playerId%2);
         Resume();
+
+        ShowMapName();
 
         AudioManager.instance.PlayBgm(true);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
@@ -173,19 +178,6 @@ public class GameManager : MonoBehaviour
         pausePanel.SetActive(false);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
         AudioManager.instance.EffectBgm(false);
-    }
-    public void NextMap()
-    {
-        if (currentMap < maxMap)
-        {
-            currentMap++;
-            SceneManager.LoadScene("Map" + currentMap);
-        }
-        else
-        {
-            Debug.Log("Finish all the levels!");
-            SceneManager.LoadScene(0);
-        }
     }
     public void ShowPausePanel()
     {
@@ -290,5 +282,34 @@ public class GameManager : MonoBehaviour
     {
         yield return null; // wait 1 frame
         ApplyStoreBoosts();
+    }
+    public void ShowMapName()
+    {
+        if (mapNameText != null)
+        {
+            mapNameText.gameObject.SetActive(true);
+            mapNameText.text = "Map " + currentMap;
+            StartCoroutine(FadeOutMapName());
+        }
+    }
+
+    private IEnumerator FadeOutMapName()
+    {
+
+        yield return new WaitForSeconds(mapNameDisplayTime);
+
+        float elapsedTime = 0f;
+        Color originalColor = mapNameText.color;
+
+        while (elapsedTime < mapNameFadeTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / mapNameFadeTime);
+            mapNameText.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+            yield return null;
+        }
+
+        mapNameText.gameObject.SetActive(false);
+        mapNameText.color = originalColor;
     }
 }
